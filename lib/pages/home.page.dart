@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
           _completed
               ? Success(
                   result: _resultText,
-                  reset: () {},
+                  reset: reset,
                 )
               : SubmitForm(
                   alcCtrl: _alcCtrl,
@@ -49,6 +49,28 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _completed = false;
       _busy = true;
+    });
+
+    return new Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        if (res >= 0.7) {
+          _resultText = "Compensa utilizar Gasolina!";
+        } else {
+          _resultText = "Compensa utilizar Álcool!";
+        }
+
+        _busy = false;
+        _completed = true;
+      });
+    });
+  }
+
+  reset() {
+    setState(() {
+      _alcCtrl = new MoneyMaskedTextController();
+      _gasCtrl = new MoneyMaskedTextController();
+      _completed = false;
+      _busy = false;
     });
   }
 }
